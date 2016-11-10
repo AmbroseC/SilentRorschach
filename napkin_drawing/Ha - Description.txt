@@ -1,0 +1,40 @@
+Napkin Drawing
+~Vu Ha
+
+-- DESCRIPTION --
+
+I chose napkin drawing because I wanted to simulate drawing on a napkin using a straw and whatever drink you have available.  I've done this many times when I've gotten
+bored during or after a meal and thought it would be interesting to create a program that could simulate the effect of the napkin becoming damp as you drip your drink on it.
+
+The program displays a background that consists of a napkin and a cup filled with a drink.  The cursor in the program is a drinking straw. To draw on the napkin the user simply clicks on the napkin where he wants the liquid to appear.  The amount of liquid in the straw is shown on the straw.  When the straw is empty of liquid you can no longer draw.  To refill the straw click and hold down the mouse button when the straw is above the drink.  The user can change the liquid's color by clicking on colored squares at the bottom-right corner of the program. The program can be reset by pressing space bar.
+ 
+
+-- HOW IT WORKS --
+
+To accomplish this project I had to analyze the aspects of drawing with a drinking straw on a napkin.
+
+I considered what materials are needed, what steps had to be taken, what changes occur when the actions are preformed, and how is the action viewed.
+
+To do napkin drawings you need a surface like a table, a napkin, a drink, and a drinking straw. Once you have these materials simply dip your straw into the drink and hold the top so that the drink does not flow out. Move your straw to the napkin and let go of the top to poor the drink out.
+
+When doing this you can see the drink entering the straw, the straw moving to the napkin, the drink leaving the straw, and the drink dampening and spreading out on the napkin.
+
+In general, you view the process from above.
+
+After analyzing the proccess, I created a rough sketch of what I wanted the program to look like. I wanted it to have a top view of a napkin with a cup nearby and have the cursor be a drinking straw.
+
+Next I started coding.  I organized what I wanted to created from simplist to most difficult. The background would be the simplist, next the straw cursor, and then the actual drawing mechanics.  
+
+I created a drawBackGround() method that would generate the background consisting of a napkin, that takes up most of the background, and a cup, that appears at the top-right corner of application window. The method uses the basic shape functions such as quad(), to make the napkin, and ellipse(), to create the cup. The cup uses a for loop to create a color gradient to create some sense of depth to the background. 
+
+Next I made a drawStraw() method that would draw the straw cursor.  I used the mouseX and mouseY variables to keep the straw at the position of the cursor.  I used the noCursor() function to remove the default cursor. The straw is made using basic quad() and ellipse() functions.  The straw is designed to look like it is angled and floating above the background.  To achieve this I used some basic design techniques such as foreshortening. I gave the straw a small shadow so that it would appear to be floating. The straw moves so that it appears to touch objects in the background when the user clicks.  To make this effect I added an offset variable that controlled the distance from the straw and its shadow.  The straw also visually indicates how much drink is in the straw. the indicator is a quad() that shrinks and grows based on a fill level variable, with a maximum and minimum fill level. I believe these effects add agency to the program.
+
+To handle the effects of the drink appearing, spreading out, and fading into the napkin I created an Effect class that would represent one drop of drink on the napkin. Each drop had to know its x and y coordinates and its color. The Effects class has a drawEffect() method that would allow each drop to draw itself.  Each drop is represented by an ellipse with an additional ellipse that grew as time passed. The second ellipse grows in a somewhat random direction off of the central ellipse to simulate spreading. To keep track of all the drops I stored all the Effects in an Arraylist so that the user could have infinite drops.
+
+I wanted to give the program some extra functionality so I added a small color pallette that would allow users to change the color of the drink. I made a drawColorMenu() method that would draw 5 color choices in uniform boxes.
+
+I placed the drawBackGround() and drawStraw() methods into the main draw() function so that they would continuously update. I added conditionals into the draw() function that would detect when the mouse button was pressed.  When the mouse button is held down while the cursor is over the drink, the straw fills with liquid.  When the curcor is over the napkin and the straw has liquid in it, an Effect is added to the Arraylist of Effects. When the cursor is over a color choice, that color becomes the color of the drink. 
+
+To make the effect actually draw out I made a loop in the main draw() function that would constantly iterate through the Arraylist and all the drawEffect() method on each effect.  I added a blending conditionals in the draw() method also to create additional effects.  The blending detects when effects are close to each other and whether or not they have been blended and then blends their colors if they have not been blended.
+
+Finally I added a conditional in the main draw() method that would detect when space bar was pressed.  This would clear the ArrayList of Effects and effectively reset the program.
